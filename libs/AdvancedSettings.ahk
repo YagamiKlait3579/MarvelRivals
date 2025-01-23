@@ -1,0 +1,2 @@
+﻿;;;;;;;;;; Advanced settings ;;;;;;;;;;
+EditAdvancedSettings := False

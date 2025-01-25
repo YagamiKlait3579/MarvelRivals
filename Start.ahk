@@ -56,14 +56,17 @@ Return
         if DebugGui
             fBorder("SearchArea", {"Coords" : DD_SA})
         while GetKeyState(DD_Key, "p") {
+            TimeStamp(A_Stamp)
             if GetKeyState(DD_BodyKey, "p")
                 AssistAim(DD_SA, A_DD_FT, DD_FindText, DD_BodyOffset)
             else if GetKeyState(DD_CloselyKey, "p")
                 AssistAim(DD_SA, A_DD_FT, DD_FindText, DD_CloselyOffset)
             else
                 AssistAim(DD_SA, A_DD_FT, DD_FindText, DD_Offset)
+            fDebugGui("Edit", "Cycle time", TimePassed(A_Stamp))
             if DD_AimingDelay
                 lSleep(DD_AimingDelay)
+            
         }
         if DebugGui
             fBorder("SearchArea", "Destroy")
@@ -77,7 +80,9 @@ Return
         if DebugGui
             fBorder("SearchArea", {"Coords" : Heal_SA})
         while GetKeyState(Heal_Key, "p") {
+            TimeStamp(A_Stamp)
                 AssistAim(Heal_SA, A_Heal_FT, Heal_FindText, Heal_Offset)
+            fDebugGui("Edit", "Cycle time", TimePassed(A_Stamp))
             if Heal_AimingDelay
                 lSleep(Heal_AimingDelay)
         }

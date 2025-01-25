@@ -585,7 +585,7 @@
             Return 
         }
         Critical, On
-        local A_Loop
+        local A_Loop, A_Key
         static once, ArrayHwnd
         if (!WinActive(PWN) && !once) || (param = "Hide") {
             once := !once
@@ -597,19 +597,23 @@
                 if (AllHwnd%A_Index% = A_ScriptHwnd)
                     Continue
                 ArrayHwnd.Push(AllHwnd%A_Index%)
-                A_Loop := AllHwnd%A_Index%
-                WinHide, ahk_id %A_Loop%
             }
+            for A_Loop, A_Key in ArrayHwnd
+                WinHide, ahk_id %A_Key%
             DetectHiddenWindows, Off
         }
         if (WinActive(PWN) && once) || (param = "Show") {
             once := !once
-            Loop, % ArrayHwnd.Length() {
-                A_Loop := ArrayHwnd[A_Index]
-                WinShow, ahk_id %A_Loop%
-            }
+            for A_Loop, A_Key in ArrayHwnd
+                WinShow, ahk_id %A_Key%
             WinHide, ahk_group ShowHide_GuiGroup
             WinShow, ahk_group ShowHide_GuiGroup
         }
         Critical, Off
+    }
+
+    GuiLineWidth(Hwnd_A, Hwnd_B) {
+        WinGetPos, X_1,,,, ahk_id %Hwnd_A%
+        WinGetPos, X_2,, W_2,, ahk_id %Hwnd_B%
+        Return % (X_2 + W_2) - X_1
     }

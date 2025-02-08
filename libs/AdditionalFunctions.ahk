@@ -10,6 +10,4 @@
             moving_Y := Round((EntityY - gScreenCenter[2]) / MouseSpeed) + Offset[2]
             fMoveMouse(moving_X, -moving_Y)
         }
-        if DebugGui
-            fDebugGui("Edit", "Cycle time", TimePassed(A_Start))
     }

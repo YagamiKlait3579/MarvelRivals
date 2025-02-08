@@ -63,7 +63,7 @@ Return
                 AssistAim(DD_SA, A_DD_FT, DD_FindText, DD_CloselyOffset)
             else
                 AssistAim(DD_SA, A_DD_FT, DD_FindText, DD_Offset)
-            fDebugGui("Edit", "Cycle time", TimePassed(A_Stamp))
+            fDebugGui("Edit", "Cycle time", TimePassed(A_Stamp) " ms")
             if DD_AimingDelay
                 lSleep(DD_AimingDelay)
             
@@ -82,7 +82,7 @@ Return
         while GetKeyState(Heal_Key, "p") {
             TimeStamp(A_Stamp)
                 AssistAim(Heal_SA, A_Heal_FT, Heal_FindText, Heal_Offset)
-            fDebugGui("Edit", "Cycle time", TimePassed(A_Stamp))
+            fDebugGui("Edit", "Cycle time", TimePassed(A_Stamp) " ms")
             if Heal_AimingDelay
                 lSleep(Heal_AimingDelay)
         }

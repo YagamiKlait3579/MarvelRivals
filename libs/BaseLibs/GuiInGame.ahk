@@ -612,8 +612,11 @@
         Critical, Off
     }
 
-    GuiLineWidth(Hwnd_A, Hwnd_B) {
-        WinGetPos, X_1,,,, ahk_id %Hwnd_A%
-        WinGetPos, X_2,, W_2,, ahk_id %Hwnd_B%
-        Return % (X_2 + W_2) - X_1
+    GuiLineWidth(Hwnd_A, Hwnd_B = "") {
+        WinGetPos, X_1,, W_1,, ahk_id %Hwnd_A%
+        if Hwnd_B {
+            WinGetPos, X_2,, W_2,, ahk_id %Hwnd_B%
+            Return % (X_2 + W_2) - X_1
+        }
+        Return W_1
     }

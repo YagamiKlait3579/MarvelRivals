@@ -64,7 +64,7 @@
         }
         for A_Loop, A_key in ["Font", "FontColor","BorderColor","BorderSize","Transparency","Blur","Scale"]
             DGP[A_key] := params[A_key] ? params[A_key] : (DGP[A_key] ? DGP[A_key] : A_DGP[A_key])
-        if params.FontSize
+        if params.FontSize || params.Scale
             DGP.FontSize := Round(((params.FontSize * gFontScaling) * gDPI) * (0.01 * DGP.Scale))
         else if !DGP.FontSize
             DGP.FontSize := Round(((A_DGP.FontSize * gFontScaling) * gDPI) * (0.01 * DGP.Scale))
@@ -94,12 +94,14 @@
 
             params = координаты GUI (по умолчанию устанавливается центр экрана)
             Можно указать двумя способами:
-            1:  GuiInGame("End", "MainInterface", {"pos" : [x,y]})
+            1:  GuiInGame("End", "MainInterface", {"pos" : [x,y,w,h]})
                 Указываем точные координаты экрана
-            2:  GuiInGame("End", "MainInterface", {"ratio" : [x,y]})
+            2:  GuiInGame("End", "MainInterface", {"ratio" : [x,y,w,h]})
                 Указываем процент от ширины и высоты экрана
                 Отсчёт координат начинается с левого верхнего угла вашего монитора, от (0.1) до (0.999).
                 Например: 0.1 (лево или верх),    0.500 (середина),   0.999 (право или низ)
+            При любом варианте в качестве третьего и четвертого параметра можно указать ширину и высоту окна.
+            Если они не указаны, ширина и высота рассчитываются автоматически.
 
         *** Редактирование окна ***
             Command = "Edit"
@@ -137,9 +139,9 @@
                 local MI_X, MI_Y, MI_W, MI_H, HwndGui, HwndGui_Blur
                 switch {
                     case (params.ratio.1 && params.ratio.2):
-                        Gui, %NameGui%: Show, % " x" Round(A_ScreenWidth * params.ratio.1) " y" Round(A_ScreenHeight * params.ratio.2) " NoActivate"
+                        Gui, %NameGui%: Show, % " x" Round(A_ScreenWidth * params.ratio.1) " y" Round(A_ScreenHeight * params.ratio.2) (params.ratio.3 ? " w" params.ratio.3 : "") (params.ratio.4 ? " h" params.ratio.4 : "") " NoActivate"
                     case (params.pos.1 && params.pos.2):
-                        Gui, %NameGui%: Show, % " x" params.pos.1 " y" params.pos.2 " NoActivate"
+                        Gui, %NameGui%: Show, % " x" params.pos.1 " y" params.pos.2 (params.pos.3 ? " w" params.pos.3 : "") (params.pos.4 ? " h" params.pos.4 : "") " NoActivate"
                     Default:
                         Gui, %NameGui%: Show, NoActivate
                 }

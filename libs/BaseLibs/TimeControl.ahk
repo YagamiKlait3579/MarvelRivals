@@ -46,6 +46,14 @@
     }
 
 ;;;;;;;;;; Other functions ;;;;;;;;;;
+    WorldTimeStamp(ByRef StampName = "", TimeType = "ms") {
+        DllCall("GetSystemTimeAsFileTime", "Int64P", A_Stamp)
+        if (TimeType = "ms")
+            Return StampName := Round((A_Stamp - 116444736000000000) / (Frequency / 1000))
+        if (TimeType = "sec")
+            Return StampName := Round((A_Stamp - 116444736000000000) / Frequency)
+    }
+
     TimeStamp(ByRef StampName = "") {
         DllCall("QueryPerformanceCounter", "Int64*", StampName)
         Return StampName					

@@ -1,5 +1,6 @@
 ﻿;;;;;;;;;; Loading ;;;;;;;;;;
-    #include %A_Scriptdir%\libs\BaseLibs\Header.ahk
+    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\Header.ahk
+    ;--------------------------------------------------
     #IfWinActive, Marvel Rivals
     global PWN := "Marvel Rivals" ; Program window name
 
@@ -7,7 +8,7 @@
         /* 
         Скрипт по умолчанию настроен на розовый цвет противников.
         Вы можете изменить настройки эти настройки в AdvancedSettings
-         */
+        */
         MouseSpeed       := 2.5       ; Скорость мыши в игре
     ;;;;; DD ;;;;; 
         DD_Key            = XButton2  ; При удержании помогает навестись на противника

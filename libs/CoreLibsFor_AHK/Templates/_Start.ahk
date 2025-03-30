@@ -12,12 +12,12 @@
     Hotkey, *%StartKey%, BaseScript
 
 ;;;;;;;;;; Gui ;;;;;;;;;;
-    PlaceForTheText := "Ширина самого длинного текста"
+    PlaceForTheText := " Ширина самого длинного текста "
     ;--------------------------------------------------
     UpdateDGP({"Transparency" : gTransparency, "Blur" : gBlur, "Scale" : gInterfaceScale})
     GuiInGame("Start", "MainInterface")
         Gui, MainInterface: Add, Text, xm ym +Center vT1, %PlaceForTheText%
-        GuiControl, MainInterface: Text, T1, Test GUI in Game
+        GuiControl, MainInterface: Text, T1, % SubStr(A_ScriptName, 1, InStr(A_ScriptName, ".", , -1) - 1)
     GuiInGame("End", "MainInterface", {"ratio" : [GuiPositionX,GuiPositionY]})
     fSuspendGui("On", "MainInterface")
     if DebugGui

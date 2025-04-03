@@ -74,25 +74,25 @@
         global
         local GetProgramPath
         if GetProgramPath := ProgramSearch("Visual Studio Code", "Notepad++")
-            Run, %GetProgramPath% %A_ScriptFullPath%
+            Run, "%GetProgramPath%" "%A_ScriptFullPath%"
         else
-            Run, Notepad.exe %A_ScriptFullPath%     
+            Run, Notepad.exe "%A_ScriptFullPath%"
     }
-
+    
     OpenScriptSettings() {
         global
         local GetProgramPath
         if GetProgramPath := ProgramSearch("Visual Studio Code", "Notepad++")
-            Run, %GetProgramPath% %FP_Settings%
+            Run, "%GetProgramPath%" "%FP_Settings%"
         else
-            Run, Notepad.exe %FP_Settings%     
+            Run, Notepad.exe "%FP_Settings%"
     }
-
+    
     OpenAdvancedSettings() {
         global
         local GetProgramPath
         if GetProgramPath := ProgramSearch("Visual Studio Code", "Notepad++")
-            Run, %GetProgramPath% %FP_AdvancedSettings%
+            Run, "%GetProgramPath%" "%FP_AdvancedSettings%"
         else
-            Run, Notepad.exe %FP_AdvancedSettings%   
+            Run, Notepad.exe "%FP_AdvancedSettings%"
     }

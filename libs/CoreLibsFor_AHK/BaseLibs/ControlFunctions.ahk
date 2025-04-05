@@ -4,17 +4,17 @@
     Hotkey, *%StopScriptKey%, StopScript
 
 ;;;;;;;;;; Functions ;;;;;;;;;;
-SuspendScript() {
-    Suspend, Toggle
-    fSuspendGui()
-}
-
-ReloadScript() {
-    Suspend, Permit
-    Reload
-}
-
-StopScript() {
-    Suspend, Permit
-    ExitApp
-}
+    SuspendScript() {
+        Suspend, Toggle
+        fSuspendGui()
+    }
+    
+    ReloadScript() {
+        Suspend, Permit
+        Reload
+    }
+    
+    StopScript() {
+        Suspend, Permit
+        ExitApp
+    }

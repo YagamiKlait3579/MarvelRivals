@@ -54,11 +54,15 @@
 
 ;;;;;;;;;; Links ;;;;;;;;;;
     OpenKeyInfo() {
-        Run, % CheckingFiles(,"KeyInfo.ahk")
+        GetProgramPath := ProgramSearch("AutoHotkey 1")
+        GetScriptPath := CheckingFiles(,"KeyInfo.ahk")
+        Run, "%GetProgramPath%" "%GetScriptPath%"
     }
 
     OpenFindText() {
-        Run, % CheckingFiles(,"FindText.ahk")
+        GetProgramPath := ProgramSearch("AutoHotkey 1")
+        GetScriptPath := CheckingFiles(,"FindText.ahk")
+        Run, "%GetProgramPath%" "%GetScriptPath%"
     }
 
     OpenDiscord() { 

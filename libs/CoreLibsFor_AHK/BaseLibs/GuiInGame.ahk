@@ -93,15 +93,27 @@
             GuiInGame("End", "MainInterface")
 
             params = координаты GUI (по умолчанию устанавливается центр экрана)
-            Можно указать двумя способами:
+            Можно указать тремя способами:
             1:  GuiInGame("End", "MainInterface", {"pos" : [x,y,w,h]})
                 Указываем точные координаты экрана
             2:  GuiInGame("End", "MainInterface", {"ratio" : [x,y,w,h]})
                 Указываем процент от ширины и высоты экрана
                 Отсчёт координат начинается с левого верхнего угла вашего монитора, от (0.1) до (0.999).
                 Например: 0.1 (лево или верх),    0.500 (середина),   0.999 (право или низ)
+            3:  GuiInGame("End", "MainInterface2", {"Hwnd" : [MainInterface,"Up",w,h]})
+            или GuiInGame("End", "MainInterface2", {"Hwnd" : MainInterface})
+                Можно указать несколько параметров :
+                    1: Hwnd окна которое будет считаться основным,
+                        и от которого будут рассчитываться остальные параметры.
+                    2: с какой стороны от основного окна создать окно,
+                        ("Up","Down","Left","Right"), по умолчанию "Up"
+                Также при использовании этого способа можно указать параметр offset,
+                который отвечает за отступ от основного окна (по умолчанию берется из UpdateDGP())
+                
             При любом варианте в качестве третьего и четвертого параметра можно указать ширину и высоту окна.
-            Если они не указаны, ширина и высота рассчитываются автоматически.
+            Если они не указаны, ширина и высота рассчитываются автоматически, кроме способа 3(Hwnd),
+            в этом варианте ширина и высота будут раны размерам основного окна.
+            Для автоматического расчета ширины и высоты в способе 3 нужно указать в их параметрах "Auto".
 
         *** Редактирование окна ***
             Command = "Edit"
@@ -136,8 +148,30 @@
                 Gui, %NameGui%: Font, % " s"DGP.FontSize " c" DGP.FontColor " q3", % DGP.Font
             }
             case "End": {
-                local MI_X, MI_Y, MI_W, MI_H, HwndGui, HwndGui_Blur
+                local MI_X, MI_Y, MI_W, MI_H, HwndGui, HwndGui_Blur, MI_Offset
                 switch {
+                    case (params.Hwnd || params.Hwnd.1) : {
+                        local MI_X2, MI_Y2, MI_W2, MI_H2
+                        if params.Hwnd.1
+                            WinGetPos, MI_X2, MI_Y2, MI_W2, MI_H2, % "ahk_id" params.Hwnd.1
+                        Else if params.Hwnd
+                            WinGetPos, MI_X2, MI_Y2, MI_W2, MI_H2, % "ahk_id" params.Hwnd
+                        Else {
+                            MsgBox, 16, GuiInGame, Не указан Hwnd основного окна, или указан не верно.`n`nThe Hwnd of the main window is not specified, or it is specified incorrectly.
+                            Return 1
+                        }
+                        Gui, %NameGui%: Show, % (params.Hwnd.3 ? ((params.Hwnd.3 = "auto") ? "" : " w" params.Hwnd.3 ): " w" MI_W2) (params.Hwnd.4 ? ((params.Hwnd.4 = "auto") ? "" : " h" params.Hwnd.4 ): " h" MI_H2) " NoActivate"
+                        WinGetPos, MI_X, MI_Y, MI_W, MI_H,% "ahk_id" %NameGui%
+                        MI_Offset := { "x" : (!params.Offset ? (DGP.BorderSize * 4) : params.Offset), "y" : (!params.Offset ? (DGP.BorderSize * 4) : params.Offset)}
+                        switch params.Hwnd.2 {
+                            case "Up":    MI_X := MI_X2,                         MI_Y := MI_Y2 - MI_H - MI_Offset.y
+                            case "Down":  MI_X := MI_X2,                         MI_Y := MI_Y2 + MI_H2 + MI_Offset.y
+                            case "Left":  MI_X := MI_X2 - MI_W - MI_Offset.x,    MI_Y := MI_Y2
+                            case "Right": MI_X := MI_X2 + MI_W2 + MI_Offset.x,   MI_Y := MI_Y2
+                            Default:      MI_X := MI_X2,                         MI_Y := MI_Y2 - MI_H - MI_Offset.y
+                        }
+                        Gui, %NameGui%: Show, x%MI_X% y%MI_Y% NoActivate
+                    }
                     case (params.ratio.1 && params.ratio.2):
                         Gui, %NameGui%: Show, % " x" Round(A_ScreenWidth * params.ratio.1) " y" Round(A_ScreenHeight * params.ratio.2) (params.ratio.3 ? " w" params.ratio.3 : "") (params.ratio.4 ? " h" params.ratio.4 : "") " NoActivate"
                     case (params.pos.1 && params.pos.2):

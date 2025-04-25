@@ -82,35 +82,34 @@
         Gui, CheckForUpdates: Show, w%w1% h%h1%, Checking for updates
     
         try {
-            /*    
-                ; Получаем дату последнего коммита (UTC)
-                local apiUrl := "https://api.github.com/repos/" nameUser "/" nameRepo "/commits/" nameBranch
-                local req := ComObjCreate("WinHttp.WinHttpRequest.5.1")
-                req.Open("GET", apiUrl, true)
-                req.SetRequestHeader("User-Agent", "AHK-Update-Checker")
-                req.Send()
-                req.WaitForResponse()
-                if (req.Status != 200)
-                    throw, req.Status
-            
-                ; Парсим дату из GitHub (UTC время)
-                if !RegExMatch(req.ResponseText, """date"":\s*""([^""]+)""", match)
-                    return false
-            
-                ; Преобразуем GitHub дату в формат YYYYMMDDHH24MISS
-                RegExMatch(match1, "(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z", dt)
-                local gitTime := dt1 dt2 dt3 dt4 dt5 dt6  ; UTC время
-    
-                ; Получаем время создания файла (локальное время)
-                local fileLocalTime
-                FileGetTime, fileLocalTime, %controlFile%, C
-            */
+            ; Получаем дату последнего коммита (UTC)
+            local apiUrl := "https://api.github.com/repos/" nameUser "/" nameRepo "/commits/" nameBranch
+            local req := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+            req.Open("GET", apiUrl, true)
+            req.SetRequestHeader("User-Agent", "AHK-Update-Checker")
+            req.Send()
+            req.WaitForResponse()
+            if (req.Status != 200)
+                throw, req.Status
+        
+            ; Парсим дату из GitHub (UTC время)
+            if !RegExMatch(req.ResponseText, """date"":\s*""([^""]+)""", match)
+                throw, req.Status
+        
+            ; Преобразуем GitHub дату в формат YYYYMMDDHH24MISS
+            RegExMatch(match1, "(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z", dt)
+            local gitTime := dt1 dt2 dt3 dt4 dt5 dt6  ; UTC время
+
+            ; Получаем время создания файла (локальное время)
+            local fileLocalTime
+            FileGetTime, fileLocalTime, %controlFile%, C
     
             ; Сравниваем времена
             if (gitTime > (fileLocalTime - (A_Now - A_NowUTC))) {
                 GuiControl, CheckForUpdates: +c00e100 +Redraw, Text1
                 GuiControl, CheckForUpdates: Text, Text1, `nДоступна новая версия!`nA new version is available!
                 CheckForUpdates_Run("End")
+                Gui, CheckForUpdates: WaitClose
                 return true
             }
             throw, ""
@@ -121,6 +120,7 @@
             GuiControl, CheckForUpdates: Text, Text1, Ошибка при проверке обновлений.`nUpdate check failed.`nError code: [ %ErrorCode% ].
         }
         CheckForUpdates_Run("End")
+        Gui, CheckForUpdates: WaitClose
         return false
     }
     

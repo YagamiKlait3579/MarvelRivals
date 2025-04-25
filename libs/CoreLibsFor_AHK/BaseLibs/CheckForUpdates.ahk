@@ -109,7 +109,7 @@
                 GuiControl, CheckForUpdates: +c00e100 +Redraw, Text1
                 GuiControl, CheckForUpdates: Text, Text1, `nДоступна новая версия!`nA new version is available!
                 CheckForUpdates_Run("End")
-                Gui, CheckForUpdates: WaitClose
+                WinWaitClose, ahk_id %CheckForUpdates% 
                 return true
             }
             throw, ""
@@ -120,7 +120,7 @@
             GuiControl, CheckForUpdates: Text, Text1, Ошибка при проверке обновлений.`nUpdate check failed.`nError code: [ %ErrorCode% ].
         }
         CheckForUpdates_Run("End")
-        Gui, CheckForUpdates: WaitClose
+        WinWaitClose, ahk_id %CheckForUpdates% 
         return false
     }
     

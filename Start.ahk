@@ -3,6 +3,7 @@
     ;--------------------------------------------------
     #IfWinActive, Marvel Rivals
     global PWN := "Marvel Rivals" ; Program window name
+    CheckForUpdates("YagamiKlait3579", "MarvelRivals", "main", CheckingFiles("File", False, "Header.ahk"))
 
 ;;;;;;;;;; Setting ;;;;;;;;;;
         /* 

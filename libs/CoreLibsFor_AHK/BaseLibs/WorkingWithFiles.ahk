@@ -1,34 +1,77 @@
 ﻿;;;;;;;;;; Loading ;;;;;;;;;;
-    DllCall("LoadLibrary", "Str", CheckingFiles(,"gdiplus.dll"))
+    DllCall("LoadLibrary", "Str", CheckingFiles("File", False, "gdiplus.dll")) ; for ReadImages
 
 ;;;;;;;;;; Search ;;;;;;;;;;
-    CheckingFiles(SearchDir = "", params*) {
+    CheckingFiles(SearchType := "File", CreateGlobalVars := true, params*) {
         /* 
-            CheckingFiles ищет файлы указанные в params по порядку в SearchDir или рабочей директории если SearchDir не указан,
-            и возвращает переменную в виде FP_ИмяФайла в которой находится путь до файла с именем и расширением самого файла.
-            Если имя файла указано без расширения то будет найдем первый попавшийся файл.
-            Поиск происходит в директории запуска исполняемого файла скрипта и во всех вложенных папках.
-            Если файл не найден, переменная FP_ИмяФайла не создается.
-            Сама функция также возвращает путь с именем и расширением фала последнего найденного файла.
-            Если не было найдено ни одного файла, возвращается 0.
-            FP = File path
+            CheckingFiles ищет файлы или папки, указанные в params, в рабочей директории (A_WorkingDir).
+
+            Параметры:
+            SearchType - тип поиска:
+                "File" (по умолчанию) - ищет только файлы
+                "Folder" - ищет только папки
+                "Auto" - ищет сначала файлы, затем папки (если файлы не найдены)
+            CreateGlobalVars - создавать ли глобальные переменные (по умолчанию true)
+                Если false, в params может быть только один элемент
+            params - список имен файлов/папок для поиска
+
+            Функция создает глобальные переменные OP_ИмяФайла/Папки (если CreateGlobalVars = true).
+            Возвращает путь последнего найденного объекта или 0, если ничего не найдено.
+
+            OP = Object path
         */
         global
-        local A_Loop, A_key, filePattern, varName, LastFile
-        SearchDir := !SearchDir ? A_WorkingDir : SearchDir
+        local A_Loop, A_key, filePattern, varName, folderName, LastFound, found
+
+        ; Проверка на количество параметров, если CreateGlobalVars = false
+        if (!CreateGlobalVars && params.Length() > 1) {
+            MsgBox, 16, CheckingFiles Error, 
+            (
+            При CreateGlobalVars = false можно указать только один параметр для поиска!
+            When CreateGlobalVars = false you can specify only one search parameter!
+            )
+            return 0
+        }
+
         for A_Loop, A_key in params {
-            filePattern := InStr(A_key, ".") ? A_key : A_key "*.*"
+            found := false
             varName := InStr(A_key, ".") ? SubStr(A_key, 1, InStr(A_key, ".") - 1) : A_key
-            Loop, Files, % SearchDir "\" filePattern, R 
-            {
-                if A_LoopFileFullPath { 
-                    FP_%varName% := A_LoopFileFullPath
-                    LastFile := A_LoopFileFullPath
-                    Break
+
+            ; Поиск файлов (если нужно)
+            if (SearchType = "File" || SearchType = "Auto") {
+                filePattern := InStr(A_key, ".") ? A_key : A_key ".*"
+                Loop, Files, % A_WorkingDir "\" filePattern, R 
+                {
+                    if (A_LoopFileFullPath) { 
+                        if (CreateGlobalVars) {
+                            OP_%varName% := A_LoopFileFullPath
+                        }
+                        LastFound := A_LoopFileFullPath
+                        found := true
+                        Break
+                    }
+                }
+            }
+
+            ; Если файлы не найдены и нужно искать папки (или явно запрошены папки)
+            if (!found && (SearchType = "Folder" || SearchType = "Auto")) {
+                ; Удаляем возможное расширение для поиска папок
+                folderName := InStr(A_key, ".") ? SubStr(A_key, 1, InStr(A_key, ".") - 1) : A_key
+                Loop, Files, % A_WorkingDir "\" folderName, RD 
+                {
+                    if (A_LoopFileFullPath && InStr(FileExist(A_LoopFileFullPath), "D")) { 
+                        if (CreateGlobalVars) {
+                            OP_%varName% := A_LoopFileFullPath
+                        }
+                        LastFound := A_LoopFileFullPath
+                        found := true
+                        Break
+                    }
                 }
             }
         }
-        Return LastFile ? LastFile : 0
+
+        Return LastFound ? LastFound : 0
     }
 
     ProgramSearch(params*) {
@@ -67,14 +110,20 @@
         */
         global
         local A_Loop, A_Section, AllVar, AllSections, OutputVar, OutputVar1, OutputVar2
+
+        ; Проверка расширения файла
         if !InStr(FilePath, ".ini")
             FilePath .= ".ini"
+
+        ; Получаем список всех секций
         if (Sections.1 = "All") {
             IniRead, AllSections, %FilePath%
             Sections := []
             loop, parse, AllSections, `n 
                 Sections.Push(A_LoopField)
         }
+
+        ; Загружаем переменные из секций в списке
         for A_Loop, A_Section in Sections {
             IniRead, AllVar, %FilePath%, %A_Section%
             loop, parse, AllVar, `n 

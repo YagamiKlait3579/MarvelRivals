@@ -60,6 +60,7 @@
     #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\GuiInGame.ahk
     #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\ControlFunctions.ahk
     #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\TimeControl.ahk
+    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\CheckForUpdates.ahk
     #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\InputDevice.ahk
     ;--------------------------------------------------
     #include %A_Scriptdir%\libs\CoreLibsFor_AHK\AuxiliaryScripts\FindText.ahk

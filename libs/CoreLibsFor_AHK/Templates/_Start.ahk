@@ -3,6 +3,7 @@
     ;--------------------------------------------------
     ;#IfWinActive, 
     ;global PWN := "" ; Program window name
+    ;CheckForUpdates("YagamiKlait3579",, "main", CheckingFiles("File", False, "Header.ahk"))
 
 ;;;;;;;;;; Setting ;;;;;;;;;;
 

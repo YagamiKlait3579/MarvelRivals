@@ -15,8 +15,8 @@
         ; Проверка ini файла
         if !CheckingFiles("File", False, "CoreSettings.ini") {
             CheckingFiles("Folder", True, "Resources")
-            IniWrite, % A_YYYY - 1, %OP_Resources%\CoreSettings.ini, Check for updates, CheckForUpdates_Year
-            IniWrite, % A_YDay - 1, %OP_Resources%\CoreSettings.ini, Check for updates, CheckForUpdates_Day
+            IniWrite, %A_YYYY%, %OP_Resources%\CoreSettings.ini, Check for updates, CheckForUpdates_Year
+            IniWrite, %A_YDay%, %OP_Resources%\CoreSettings.ini, Check for updates, CheckForUpdates_Day
             IniWrite, 0, %OP_Resources%\CoreSettings.ini, Check for updates, CheckForUpdates_OffUpdates
         }
         LoadIniSection(CheckingFiles("File", True, "CoreSettings.ini"), "Check for updates")

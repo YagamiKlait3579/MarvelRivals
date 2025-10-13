@@ -74,10 +74,10 @@
         ;--------------------------------------------------
         Gui, CheckForUpdates: Add, Picture, xm y+m w-1 hp +Border +BackgroundTrans vDiscordGUI, % "HBITMAP:" ReadImages(CheckingFiles("File", False, "Base_Images.dll"), "GitHubLogo")
         funcObj := Func("Tray_links").Bind("Discord")
-        GuiControl KeyInfo: +g, DiscordGUI, %funcObj%
+        GuiControl CheckForUpdates: +g, DiscordGUI, %funcObj%
         Gui, CheckForUpdates: Add, Picture, xm y+m w-1 hp +Border +BackgroundTrans vGitHubGUI, % "HBITMAP:" ReadImages(CheckingFiles("File", False, "Base_Images.dll"), "DiscordLogo")
         funcObj := Func("Tray_links").Bind("GitHub")
-        GuiControl KeyInfo: +g, GitHubGUI, %funcObj%
+        GuiControl CheckForUpdates: +g, GitHubGUI, %funcObj%
         ;--------------------------------------------------
         Gui, CheckForUpdates: Show, w%w1% h%h1%, Checking for updates
     

@@ -10,7 +10,7 @@
 ;;;;;;;;;; Variables ;;;;;;;;;;
 
 ;;;;;;;;;; Hotkeys ;;;;;;;;;;
-    Hotkey, *%StartKey%, BaseScript
+    Hotkey, *%StartKey%, Main
 
 ;;;;;;;;;; Gui ;;;;;;;;;;
     PlaceForTheText := " Ширина самого длинного текста "
@@ -28,6 +28,6 @@
 Return
 
 ;;;;;;;;;; Scripts ;;;;;;;;;;
-    BaseScript:
-    
-    Return
+    Main() {
+        global
+    }

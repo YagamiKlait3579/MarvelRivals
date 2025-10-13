@@ -55,7 +55,7 @@
         DllCall("QueryPerformanceCounter", "Int64*", CounterAfter)
         CounterAfter := End != "" ? End : CounterAfter
         if (TimeType = "ms")
-            Return Round(1000 * (CounterAfter - Start) / Frequency, 3)
+            Return Round(((CounterAfter - Start) / Frequency) * 1000, 3)
         if (TimeType = "sec")
             Return Round((CounterAfter - Start) / Frequency, 3)
     }
@@ -70,7 +70,7 @@
         DllCall("GetSystemTimeAsFileTime", "Int64P", CounterAfter)
         CounterAfter := End != "" ? End : (CounterAfter - 116444736000000000)
         if (TimeType = "ms")
-            Return Round(1000 * (CounterAfter - Start) / Frequency, 3)
+            Return Round(((CounterAfter - Start) / Frequency) * 1000, 3)
         if (TimeType = "sec")
             Return Round((CounterAfter - Start) / Frequency, 3)
     }

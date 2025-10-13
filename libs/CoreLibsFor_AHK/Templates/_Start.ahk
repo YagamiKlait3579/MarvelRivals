@@ -29,6 +29,5 @@ Return
 
 ;;;;;;;;;; Scripts ;;;;;;;;;;
     Main() {
-        global
-        
+        global  
     }

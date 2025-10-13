@@ -6,25 +6,6 @@
     CheckForUpdates("YagamiKlait3579", "MarvelRivals", "main", CheckingFiles("File", False, "Header.ahk"))
 
 ;;;;;;;;;; Setting ;;;;;;;;;;
-        /* 
-        Скрипт по умолчанию настроен на розовый цвет противников.
-        Вы можете изменить настройки эти настройки в AdvancedSettings
-        */
-        MouseSpeed       := 2.5       ; Скорость мыши в игре
-    ;;;;; DD ;;;;; 
-        DD_Key            = XButton2  ; При удержании помогает навестись на противника
-        DD_BodyKey        = F13       ; При удержании вместе с основной клавишей наводится на альтернативные координаты N1
-        DD_CloselyKey     = Alt       ; При удержании вместе с основной клавишей наводится на альтернативные координаты N2
-        DD_SearchArea    := 1300      ; Область поиска врагов в пикселях (по ширине экрана, от центра)
-        DD_AimingDelay   := 0         ; Пауза между движениями мыши (увеличьте если у вас сильно дергается экран при наведении)
-        DD_Offset        := [35,19]   ; Смещение от левого верхнего угла полоски здоровья
-        DD_BodyOffset    := [35,25]   ; Альтернативное смещение от левого верхнего угла полоски здоровья N1
-        DD_CloselyOffset := [50,45]   ; Альтернативное смещение от левого верхнего угла полоски здоровья N2
-    ;;;;; Heal ;;;;;
-        Heal_Key          = XButton1  ; При удержании помогает навестись на союзника
-        Heal_SearchArea  := 300       ; Область поиска союзников в пикселях (по ширине экрана, от центра)
-        Heal_AimingDelay := 10        ; Пауза между движениями мыши (увеличьте если у вас сильно дергается экран при наведении)
-        Heal_Offset      := [0,15]    ; Смещение от желтой стрелочки над раненным союзником
 
 ;;;;;;;;;; Variables ;;;;;;;;;;
     global MouseSpeed := MouseSpeed < 1 ? 1 : MouseSpeed
@@ -52,9 +33,9 @@
 Return
 
 ;;;;;;;;;; Scripts ;;;;;;;;;;
-    DD:
-        GuiControl, MainInterface: Text, T1, DD
-        GuiControl, MainInterface: +cLime +Redraw, T1
+    DD() {
+        global
+        GuiInGame("Edit", "MainInterface", {"id" : "T1", "Color" : "Lime", "Text" : "DD"})
         if DebugGui
             fBorder("SearchArea", {"Coords" : DD_SA})
         while GetKeyState(DD_Key, "p") {
@@ -72,13 +53,12 @@ Return
         }
         if DebugGui
             fBorder("SearchArea", "Destroy")
-        GuiControl, MainInterface: Text, T1, Disabled
-        GuiControl, MainInterface: +cRed +Redraw, T1
-    Return
+        GuiInGame("Edit", "MainInterface", {"id" : "T1", "Color" : "Red", "Text" : "Disabled"})
+    }
 
-    Heal:
-        GuiControl, MainInterface: Text, T1, Heal
-        GuiControl, MainInterface: +cLime +Redraw, T1
+    Heal() {
+        global
+        GuiInGame("Edit", "MainInterface", {"id" : "T1", "Color" : "Lime", "Text" : "Heal"})
         if DebugGui
             fBorder("SearchArea", {"Coords" : Heal_SA})
         while GetKeyState(Heal_Key, "p") {
@@ -90,6 +70,5 @@ Return
         }
         if DebugGui
             fBorder("SearchArea", "Destroy")
-        GuiControl, MainInterface: Text, T1, Disabled
-        GuiControl, MainInterface: +cRed +Redraw, T1
-    Return
+        GuiInGame("Edit", "MainInterface", {"id" : "T1", "Color" : "Red", "Text" : "Disabled"})
+    }

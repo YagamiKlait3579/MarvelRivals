@@ -2,7 +2,7 @@
     CheckingFiles("File", True, "Base_ICO", "Settings.ahk", "AdvancedSettings.ahk")
     
 ;;;;;;;;;; Tray ;;;;;;;;;;
-    Menu, Tray, Tip, Game Helper
+    Menu, Tray, Tip, % SubStr(A_ScriptName, 1, InStr(A_ScriptName, ".", , -1) - 1)
     Menu, Tray, Click, 1
     Menu, Tray, icon, %OP_Base_ICO%,1, 1
 

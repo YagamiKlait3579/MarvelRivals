@@ -131,12 +131,13 @@
         }
     }
 
+;;;;;;;;;;  Working with Images files ;;;;;;;;;;
     ReadImages(DllPath, ResourceName, ResourceType = "PNG") {
         ;DllCall("LoadLibrary", "Str", "Gdiplus.dll")
         pToken := Gdip_Startup()
         
         hModule := DllCall("LoadLibraryEx", "Str", DllPath, "UInt", 0, "UInt", 2)
-        hRes := DllCall("FindResource", "Ptr", hModule, "Str", ResourceName, "Str", ResourceType)
+        hRes := DllCall("FindResource", "Ptr", hModule, ((ResourceName ~= "^\d+$") ? "UInt" : "Str"), ResourceName, "Str", ResourceType)
         hResData := DllCall("LoadResource", "Ptr", hModule, "Ptr", hRes)
         pResData := DllCall("LockResource", "Ptr", hResData)
         ResSize := DllCall("SizeofResource", "Ptr", hModule, "Ptr", hRes)
@@ -148,9 +149,39 @@
         DllCall("CloseHandle", "Ptr", hFile)
     
         pBitmap := Gdip_CreateBitmapFromFile(TempImagePath)
-    
+        hBitmap := Gdip_CreateHBITMAPFromBitmap(pBitmap)
+        
         DllCall("FreeLibrary", "Ptr", hModule)
         FileDelete, %TempImagePath%
+        Gdip_DisposeImage(pBitmap)
+        Gdip_Shutdown(pToken)
 
-        Return Gdip_CreateHBITMAPFromBitmap(pBitmap)
+        Return hBitmap
+    }
+
+    GetImageSizeFromDll(DllPath, ResourceName, ResourceType := "PNG") {
+        pToken := Gdip_Startup()
+        
+        hModule := DllCall("LoadLibraryEx", "Str", DllPath, "UInt", 0, "UInt", 2)
+        hRes := DllCall("FindResource", "Ptr", hModule, ((ResourceName ~= "^\d+$") ? "UInt" : "Str"), ResourceName, "Str", ResourceType)
+        hResData := DllCall("LoadResource", "Ptr", hModule, "Ptr", hRes)
+        pResData := DllCall("LockResource", "Ptr", hResData)
+        ResSize := DllCall("SizeofResource", "Ptr", hModule, "Ptr", hRes)
+
+        TempImagePath := A_Temp "\TempImage_" ResourceName ".png"
+        FileDelete, %TempImagePath%
+        hFile := DllCall("CreateFile", "Str", TempImagePath, "UInt", 0x40000000, "UInt", 0, "UInt", 0, "UInt", 2, "UInt", 0, "UInt", 0, "Ptr")
+        DllCall("WriteFile", "Ptr", hFile, "Ptr", pResData, "UInt", ResSize, "UInt*", BytesWritten, "UInt", 0)
+        DllCall("CloseHandle", "Ptr", hFile)
+
+        pBitmap := Gdip_CreateBitmapFromFile(TempImagePath)
+        
+        Gdip_GetImageDimensions(pBitmap, width, height)
+        
+        DllCall("FreeLibrary", "Ptr", hModule)
+        FileDelete, %TempImagePath%
+        Gdip_DisposeImage(pBitmap)
+        Gdip_Shutdown(pToken)
+
+        Return {"width": width, "height": height}
     }

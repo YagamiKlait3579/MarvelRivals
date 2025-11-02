@@ -45,6 +45,11 @@
         UpdateDGP устанавливает параметры по умолчанию для отрисовки новых окон GuiInGame, fDebugGui, fSuspendGui.
         Для корректной работы при загрузке скрипта создать глобальный массив DGP.
         global DGP := []
+
+        Текущие настройки можно сохранить в переменную командой "Save"
+            Backup := UpdateDGP("Save")
+        для возвращения сохраненных настроек используйте созданную вами переменную в качестве параметра
+            UpdateDGP(Backup)
         */
         global
         ; DGP = Default GUI Parameters (Парамеры по умолчанию для всех GUI)
@@ -58,18 +63,19 @@
                        ,"Transparency" : 100             ; Прозрачность, от 0 (прозрачно) до 255 (непрозрачно)
                        ,"Blur"         : 255             ; Размытие фона, от 0 (без размытия) до 255 (полное размытие)
                        ,"Scale"        : 100           } ; Масштаб интерфейса (В процентах)
-        if (params = "SetDefault") || (params = "Default") {
-            DGP := A_DGP
-            Return
-        }
-        for A_Loop, A_key in ["Font", "FontColor","BorderColor","BorderSize","Transparency","Blur","Scale"]
-            DGP[A_key] := params[A_key] ? params[A_key] : (DGP[A_key] ? DGP[A_key] : A_DGP[A_key])
-        if params.FontSize || params.Scale
-            DGP.FontSize := Round(((params.FontSize * gFontScaling) * gDPI) * (0.01 * DGP.Scale))
-        else if !DGP.FontSize
-            DGP.FontSize := Round(((A_DGP.FontSize * gFontScaling) * gDPI) * (0.01 * DGP.Scale))
-        DGP.Margin := [params.Margin.1 ? params.Margin.1 : (DGP.Margin.1 ? DGP.Margin.1 : Round(DGP.FontSize * A_DGP.Margin.1))
-                      ,params.Margin.2 ? params.Margin.2 : (DGP.Margin.2 ? DGP.Margin.2 : Round(DGP.FontSize * A_DGP.Margin.2))]
+        Switch params {
+            case "SetDefault", "Default" : DGP := A_DGP
+            case "Save", "SaveBackup" : Return DGP
+            Default:
+                for A_Loop, A_key in ["Font", "FontColor","BorderColor","BorderSize","Transparency","Blur","Scale"]
+                    DGP[A_key] := params[A_key] ? params[A_key] : (DGP[A_key] ? DGP[A_key] : A_DGP[A_key])
+                if params.FontSize || params.Scale
+                    DGP.FontSize := Round(((params.FontSize * gFontScaling) * gDPI) * (0.01 * DGP.Scale))
+                else if !DGP.FontSize
+                    DGP.FontSize := Round(((A_DGP.FontSize * gFontScaling) * gDPI) * (0.01 * DGP.Scale))
+                DGP.Margin := [params.Margin.1 ? params.Margin.1 : (DGP.Margin.1 ? DGP.Margin.1 : Round(DGP.FontSize * A_DGP.Margin.1))
+                              ,params.Margin.2 ? params.Margin.2 : (DGP.Margin.2 ? DGP.Margin.2 : Round(DGP.FontSize * A_DGP.Margin.2))]
+        }        
     }
 
     GuiInGame(Command, NameGui, params = "") {

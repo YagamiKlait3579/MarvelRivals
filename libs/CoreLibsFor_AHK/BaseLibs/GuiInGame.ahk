@@ -65,7 +65,10 @@
                        ,"Scale"        : 100           } ; Масштаб интерфейса (В процентах)
         Switch params {
             case "SetDefault", "Default" : DGP := A_DGP
-            case "Save", "SaveBackup" : Return DGP
+            case "Save", "SaveBackup" :
+                        local backup := DGP.Clone()
+                        backup.Margin := [DGP.Margin.1, DGP.Margin.2]
+                        Return backup
             Default:
                 for A_Loop, A_key in ["Font", "FontColor","BorderColor","BorderSize","Transparency","Blur","Scale"]
                     DGP[A_key] := params[A_key] ? params[A_key] : (DGP[A_key] ? DGP[A_key] : A_DGP[A_key])

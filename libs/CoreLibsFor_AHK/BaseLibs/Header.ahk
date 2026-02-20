@@ -48,22 +48,22 @@
 
 ;;;;;;;;;; Include ;;;;;;;;;;
     ;#include %A_Scriptdir%\libs\
-    ;SetWorkingDir %A_ScriptDir%\libs\
+    SetWorkingDir %A_ScriptDir%\libs\
     ;--------------------------------------------------
-    #include *i %A_Scriptdir%\Settings.ahk
-    #include *i %A_Scriptdir%\libs\Settings.ahk
-    #include *i %A_Scriptdir%\libs\AdvancedSettings.ahk
-    #include *i %A_Scriptdir%AdvancedSettings.ahk
+    #include *i %A_WorkingDir%\..\Settings.ahk
+    #include *i %A_WorkingDir%\Settings.ahk
+    #include *i %A_WorkingDir%\..\AdvancedSettings.ahk
+    #include *i %A_WorkingDir%\AdvancedSettings.ahk
     ;--------------------------------------------------
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\WorkingWithFiles.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\TrayMenu.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\GuiInGame.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\ControlFunctions.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\TimeControl.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\CheckForUpdates.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\BaseLibs\InputDevice.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\WorkingWithFiles.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\TrayMenu.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\GuiInGame.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\ControlFunctions.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\TimeControl.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\CheckForUpdates.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\BaseLibs\InputDevice.ahk
     ;--------------------------------------------------
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\AuxiliaryScripts\FindText.ahk
-    #include %A_Scriptdir%\libs\CoreLibsFor_AHK\AuxiliaryScripts\Gdip.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\AuxiliaryScripts\FindText.ahk
+    #include %A_WorkingDir%\CoreLibsFor_AHK\AuxiliaryScripts\Gdip.ahk
     ;--------------------------------------------------
-    #include *i %A_Scriptdir%\libs\AdditionalFunctions.ahk
+    #include *i %A_WorkingDir%\AdditionalFunctions.ahk

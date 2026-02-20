@@ -47,7 +47,7 @@
     full_command_line := ""
 
 ;;;;;;;;;; Include ;;;;;;;;;;
-    ;#include %A_Scriptdir%\libs\
+    #include %A_Scriptdir%\libs\
     SetWorkingDir %A_ScriptDir%\libs\
     ;--------------------------------------------------
     #include *i %A_WorkingDir%\..\Settings.ahk
